@@ -12,6 +12,9 @@ using namespace std;
 /// <returns></returns>
 vector<Student> readStudentsFromFile();
 
+/// <summary>
+/// Записва информацията на студент във файла
+/// </summary>
 void writeStudentInFile();
 
 int main()
@@ -26,12 +29,13 @@ int main()
 				"3. Create new student" << endl <<
 				"4. Exit" << endl;
 
+			cout << "Choose an option: ";
 			cin >> selectedOperation;
-			while (cin.fail())
+			while (cin.fail()) //проверява за грешнен тип входни данни
 			{
-				cout << "Wrong input. Please choose a digit:" << endl;
 				cin.clear();
 				cin.ignore(256, '\n');
+				cout << "Wrong input. Please choose a valid option: " << endl;
 				cin >> selectedOperation;
 			}
 			switch (selectedOperation)
@@ -45,7 +49,7 @@ int main()
 			case 2:
 			{
 				StudentFlow flow(readStudentsFromFile());
-				cout << endl << "Student in the flow between 18 and 26 are " << endl << flow;
+				cout << endl << "Student in the flow between 18 and 26 are " << endl << flow << endl;
 				break;
 			}
 			case 3:
@@ -148,15 +152,13 @@ void writeStudentInFile()
 	try
 	{
 		string name;
-		const regex namePattern("^[a-zA-Z]+\s[a-zA-Z]+$"); // Името трябва да е във формат Име Фамилия
+		const regex namePattern(R"(^(?:[a-zA-Z]+\s[a-zA-Z]+)$)"); // Името трябва да е във формат Име Фамилия
 		cout << "Enter student name: ";
 		getline(cin, name);
 
-		while (regex_match(name, namePattern))
+		while (!regex_match(name, namePattern))
 		{
-			cout << "Invalid name. Please enter a valid name: ";
-			cin.clear();
-			cin.ignore(256, '\n');
+			cout << "Invalid name. Please enter a valid name in format Name FamilyName: ";
 			getline(cin, name);
 		}
 
@@ -165,12 +167,12 @@ void writeStudentInFile()
 		cout << "Enter faculty number: ";
 		getline(cin, facNumber);
 
-		const regex facNumberPattern("^(?:[1-9]{1}+[0-9]{8})$"); //Факултетния номер трябва да започва с 1 и да е 9 цифри
+		const regex facNumberPattern(R"(^(?:[1-9]{1}[0-9]{8})$)"); //Факултетния номер трябва да започва с 1 и да е 9 цифри
 
-		while (regex_match(facNumber, facNumberPattern))
+		while (!regex_match(facNumber, facNumberPattern))
 		{
-			cout << "Invalid faculty number. Please enter a 9 digit faculcy number: " << endl;
-			cin >> facNumber;
+			cout << "Invalid faculty number. Please enter a 9 digit faculcy number: ";
+			getline(cin, facNumber);
 		}
 
 		st.setFakNumber(facNumber);
@@ -181,9 +183,9 @@ void writeStudentInFile()
 
 		while (cin.fail() || day > 31 || day < 1)
 		{
-			cout << "Invalid day. Please enter a valid day: ";
 			cin.clear();
 			cin.ignore(256, '\n');
+			cout << "Invalid day. Please enter a valid day: ";
 			cin >> day;
 		}
 
@@ -193,9 +195,9 @@ void writeStudentInFile()
 
 		while (cin.fail() || month > 12 || month < 1)
 		{
-			cout << "Invalid month. Please enter a valid month: ";
 			cin.clear();
 			cin.ignore(256, '\n');
+			cout << "Invalid month. Please enter a valid month: ";
 			cin >> month;
 		}
 
@@ -205,9 +207,9 @@ void writeStudentInFile()
 
 		while (cin.fail() || year > 2006 || year < 1930)
 		{
-			cout << "Invalid year. Please enter a valid year: ";
 			cin.clear();
 			cin.ignore(256, '\n');
+			cout << "Invalid year. Please enter a valid year: ";
 			cin >> year;
 		}
 
@@ -221,18 +223,21 @@ void writeStudentInFile()
 
 		while (cin.fail())
 		{
-			cout << "Invalid average grade. Please enter a valid number: ";
 			cin.clear();
 			cin.ignore(256, '\n');
+			cout << "Invalid average grade. Please enter a valid number: ";
 			cin >> avrGrade;
 		}
 		st.setAvrGrade(avrGrade);
 
 		myFile << st.getName() << " " << st.getFakNumber() << " " << st.getBirthDate().getDate() << " " << st.getAvrGrade() << endl;
 		myFile.close();
+
+		cout << "Added " << st;
 	}
 	catch (exception e)
 	{
+		cout << "There was an error " << e.what() << endl;
 		myFile.close();
 	}
 }

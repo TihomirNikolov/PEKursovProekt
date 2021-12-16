@@ -1,3 +1,6 @@
 Tihomir Nikolov 121219077 1.1.2000 5.2
 Ivan Ivanov 121915043 12.3.2000 5.1
-Petar Georgiev 121219077 12.3.2001 5.12
+Petar Georgiev 121219005 12.3.2001 5.12
+Ivan Petrov 121215077 31.1.1993 5
+Georgi Georgiev 121214001 20.2.1990 4.1
+Alexander Alexandrov 121220122 20.6.2001 4.1
